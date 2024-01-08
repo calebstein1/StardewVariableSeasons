@@ -11,15 +11,25 @@ namespace StardewVariableSeasons
     {
         public override void Entry(IModHelper helper)
         {
-            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.GameLoop.DayEnding += OnDayEnding;
         }
 
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
             
-            this.Monitor.Log($"{Game1.player.name} pressed {e.Button}.", LogLevel.Debug);
+            Monitor.Log($"{Helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange}", LogLevel.Debug);
+
+            if (Game1.Date.DayOfMonth == 14)
+            {
+                var nextSeasonChange = new ModData
+                {
+                    NextSeasonChange = 24
+                };
+                
+                Helper.Data.WriteSaveData("next-season-change", nextSeasonChange);
+            }
         }
     }
 }
