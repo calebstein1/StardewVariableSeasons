@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -42,22 +43,24 @@ namespace StardewVariableSeasons
 
         public override void Entry(IModHelper helper)
         {
+            var harmony = new Harmony(ModManifest.UniqueID);
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
+                transpiler: new HarmonyMethod(typeof(NewDayAfterFadeTranspiler), nameof(NewDayAfterFadeTranspiler.Transpiler))
+            );
             helper.Events.GameLoop.DayEnding += OnDayEnding;
         }
 
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
-            var Season = new Seasons();
+            var season = new Seasons();
             var changeDate = Helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange;
             
-            Monitor.Log(Season.Next(), LogLevel.Debug);
-            Monitor.Log(Season.Prev(), LogLevel.Debug);
+            Monitor.Log(season.Next(), LogLevel.Debug);
+            Monitor.Log(season.Prev(), LogLevel.Debug);
 
-            if (Game1.Date.DayOfMonth == 28)
-                Game1.currentSeason = Season.Prev();
-            
             Monitor.Log(Game1.Date.DayOfMonth.ToString(), LogLevel.Debug);
-            if (Game1.Date.DayOfMonth == 14)
+            if (Game1.dayOfMonth == 14)
             {
                 Monitor.Log("Drawing new date...", LogLevel.Debug);
                 var nextSeasonChange = new ModData
@@ -67,6 +70,9 @@ namespace StardewVariableSeasons
                 
                 Helper.Data.WriteSaveData("next-season-change", nextSeasonChange);
             }
+
+            if (Game1.dayOfMonth == 28)
+                Game1.dayOfMonth = 0;
             
             Monitor.Log(Game1.currentSeason, LogLevel.Debug);
             Monitor.Log(changeDate.ToString(), LogLevel.Debug);
@@ -74,7 +80,14 @@ namespace StardewVariableSeasons
             if (Game1.Date.DayOfMonth == changeDate)
             {
                 Monitor.Log("Change to next season", LogLevel.Debug);
-                Game1.currentSeason = Season.Next();
+                if (season.Next() == "spring")
+                {
+                    Game1.year++;
+                    if (Game1.year == 2)
+                        Game1.addKentIfNecessary();
+                }
+
+                Game1.currentSeason = season.Next();
                 Game1.setGraphicsForSeason();
             }
         }
