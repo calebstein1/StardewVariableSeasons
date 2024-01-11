@@ -10,8 +10,10 @@ namespace StardewVariableSeasons
     {
         public static void OnDayEnding(IMonitor monitor, IModHelper helper, object sender, DayEndingEventArgs e)
         {
+            ModEntry.ChangeDate = helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange;
+            
             var season = new Seasons();
-            var changeDate = helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange;
+            var changeDate = ModEntry.ChangeDate;
             
             monitor.Log($"Next season is {season.Next()}", LogLevel.Debug);
             monitor.Log($"Previous season was {season.Prev()}", LogLevel.Debug);
