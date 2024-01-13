@@ -11,7 +11,6 @@ namespace StardewVariableSeasons
 {
     internal sealed class ModEntry : Mod
     {
-        public static ModData StardewVariableSeasonsSaveData;
         public static int ChangeDate;
         public static string SeasonByDay;
         

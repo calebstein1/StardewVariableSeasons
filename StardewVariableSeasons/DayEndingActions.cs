@@ -15,8 +15,8 @@ namespace StardewVariableSeasons
             var season = new Seasons();
             var changeDate = ModEntry.ChangeDate;
             
-            monitor.Log($"Next season is {season.Next()}", LogLevel.Debug);
-            monitor.Log($"Previous season was {season.Prev()}", LogLevel.Debug);
+            monitor.Log($"Next season is {season.Next(Game1.currentSeason)}", LogLevel.Debug);
+            monitor.Log($"Previous season was {season.Prev(Game1.currentSeason)}", LogLevel.Debug);
 
             monitor.Log($"Current day is {Game1.Date.DayOfMonth.ToString()}", LogLevel.Debug);
             switch (Game1.dayOfMonth)
@@ -34,22 +34,30 @@ namespace StardewVariableSeasons
                 }
                 case 28:
                     Game1.dayOfMonth = 0;
+                    ModEntry.SeasonByDay = season.Next(ModEntry.SeasonByDay);
+                    var seasonByDay = new ModData
+                    {
+                        SeasonByDay = ModEntry.SeasonByDay
+                    };
+                        
+                    helper.Data.WriteSaveData("season-by-day", seasonByDay);
                     break;
             }
 
-            monitor.Log($"Current season is {Game1.currentSeason}", LogLevel.Debug);
+            monitor.Log($"Current actual season is {Game1.currentSeason}", LogLevel.Debug);
+            monitor.Log($"Current season by day is {ModEntry.SeasonByDay}", LogLevel.Debug);
             monitor.Log($"Next season change on {changeDate.ToString()}", LogLevel.Debug);
 
             if (Game1.Date.DayOfMonth != changeDate) return;
             monitor.Log("Change to next season", LogLevel.Debug);
-            if (season.Next() == "spring")
+            if (season.Next(Game1.currentSeason) == "spring")
             {
                 Game1.year++;
                 if (Game1.year == 2)
                     Game1.addKentIfNecessary();
             }
 
-            Game1.currentSeason = season.Next();
+            Game1.currentSeason = season.Next(Game1.currentSeason);
             Game1.setGraphicsForSeason();
         }
     }

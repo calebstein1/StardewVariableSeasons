@@ -78,13 +78,13 @@ namespace StardewVariableSeasons
             return Game1.currentSeason;
         }
 
-        public string Next()
+        public string Next(string season)
         {
-            return GetSeasonById(GetSeasonId(Game1.currentSeason) + 1);
+            return GetSeasonById(GetSeasonId(season) + 1);
         }
-        public string Prev()
+        public string Prev(string season)
         {
-            return GetSeasonById(GetSeasonId(Game1.currentSeason) - 1);
+            return GetSeasonById(GetSeasonId(season) - 1);
         }
     }
 }
