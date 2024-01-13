@@ -19,18 +19,18 @@ namespace StardewVariableSeasons
             festival = $"{ModEntry.SeasonByDay}{Game1.dayOfMonth}";
         }
 
-        public static void ClockUpdatePrefix(out string __state)
+        public static void ResetSeasonPrefix(out string __state)
         {
             __state = Game1.currentSeason;
             Game1.currentSeason = ModEntry.SeasonByDay;
         }
         
-        public static void ClockUpdatePostfix(string __state)
+        public static void ResetSeasonPostfix(string __state)
         {
             Game1.currentSeason = __state;
         }
         
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> ReplaceCurrentSeasonTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             

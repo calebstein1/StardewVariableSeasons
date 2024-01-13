@@ -59,6 +59,10 @@ namespace StardewVariableSeasons
 
             Game1.currentSeason = season.Next(Game1.currentSeason);
             Game1.setGraphicsForSeason();
+            Utility.ForAllLocations(delegate(GameLocation l)
+            {
+                l.seasonUpdate(Game1.GetSeasonForLocation(l));
+            });
         }
     }
 }

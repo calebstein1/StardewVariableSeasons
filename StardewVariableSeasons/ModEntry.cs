@@ -40,13 +40,26 @@ namespace StardewVariableSeasons
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), "performTenMinuteClockUpdate"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ClockUpdatePrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ClockUpdatePostfix))
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "warpFarmer",
+                    new[] { typeof(LocationRequest), typeof(int), typeof(int), typeof(int) }),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), "AreStoresClosedForFestival"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "getStartTimeOfFestival"),
-                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.Transpiler))
+                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ReplaceCurrentSeasonTranspiler))
             );
             
             helper.Events.GameLoop.DayEnding += (sender, e) => DayEndingActions.OnDayEnding(Monitor, Helper, sender, e);
