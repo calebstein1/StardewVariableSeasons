@@ -27,6 +27,27 @@ namespace StardewVariableSeasons
                 original: AccessTools.Method(typeof(StardewValley.Objects.TV), "getWeatherForecast"),
                 postfix: new HarmonyMethod(typeof(CustomWeatherChannelMessage), nameof(CustomWeatherChannelMessage.Postfix))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.IsFestPrefix))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Event), "tryToLoadFestival"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.LoadFestPrefix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "performTenMinuteClockUpdate"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ClockUpdatePrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ClockUpdatePostfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), "getStartTimeOfFestival"),
+                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.Transpiler))
+            );
             
             helper.Events.GameLoop.DayEnding += (sender, e) => DayEndingActions.OnDayEnding(Monitor, Helper, sender, e);
             helper.Events.GameLoop.SaveLoaded +=
