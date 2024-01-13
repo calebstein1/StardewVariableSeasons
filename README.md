@@ -23,6 +23,6 @@ What's in development:
 - The general store will sell crop seeds for the next season as well as the current season
 
 Known bugs:
-- Festivals and birthdays in close proximity to the beginning or end of a season may happen twice or not at all depending on the random date of season change
-- The year will increment on the randomly rolled date that Winter changes to Spring, rather than being fixed on Spring 1
+- Festivals and birthdays in close proximity to the beginning or end of a season are entirely broken if they occur "out of season," fix coming soon
+- The year will increment on the randomly rolled date that Winter changes to Spring, rather than being fixed on Spring 1, fix coming soon
 - ??? (please report any you find)
