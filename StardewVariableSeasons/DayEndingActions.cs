@@ -8,6 +8,16 @@ namespace StardewVariableSeasons
 {
     public static class DayEndingActions
     {
+        private static void SaveCropSurvivalCounter(IModHelper helper)
+        {
+            var cropSurvivalCounter = new ModData
+            {
+                CropSurvivalCounter = ModEntry.CropSurvivalCounter
+                
+            };
+            
+            helper.Data.WriteSaveData("crop-survival-counter", cropSurvivalCounter);
+        }
         public static void OnDayEnding(IMonitor monitor, IModHelper helper, object sender, DayEndingEventArgs e)
         {
             ModEntry.ChangeDate = helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange;
@@ -44,12 +54,22 @@ namespace StardewVariableSeasons
                     break;
             }
 
+            if (ModEntry.CropSurvivalCounter < 5)
+            {
+                ModEntry.CropSurvivalCounter++;
+                SaveCropSurvivalCounter(helper);
+            }
+
             monitor.Log($"Current actual season is {Game1.currentSeason}", LogLevel.Debug);
             monitor.Log($"Current season by day is {ModEntry.SeasonByDay}", LogLevel.Debug);
             monitor.Log($"Next season change on {changeDate.ToString()}", LogLevel.Debug);
+            monitor.Log($"Crop survival counter is {ModEntry.CropSurvivalCounter.ToString()}", LogLevel.Debug);
 
             if (Game1.Date.DayOfMonth != changeDate) return;
             monitor.Log("Change to next season", LogLevel.Debug);
+            ModEntry.CropSurvivalCounter = 0;
+            SaveCropSurvivalCounter(helper);
+            
             if (season.Next(Game1.currentSeason) == "spring")
             {
                 Game1.year++;

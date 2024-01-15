@@ -11,7 +11,12 @@ namespace StardewVariableSeasons
 {
     internal sealed class ModEntry : Mod
     {
+        public void TestFunc()
+        {
+            Monitor.Log("uhh... kill?", LogLevel.Debug);
+        }
         public static int ChangeDate;
+        public static int CropSurvivalCounter;
         public static string SeasonByDay;
         
         public override void Entry(IModHelper helper)
@@ -62,6 +67,11 @@ namespace StardewVariableSeasons
                 transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ReplaceCurrentSeasonTranspiler))
             );
             
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Crop), "Kill"),
+                prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix))
+            );
+
             helper.Events.GameLoop.DayEnding += (sender, e) => DayEndingActions.OnDayEnding(Monitor, Helper, sender, e);
             helper.Events.GameLoop.SaveLoaded +=
                 (sender, e) => SaveLoadedActions.OnSaveLoaded(Monitor, Helper, sender, e);
