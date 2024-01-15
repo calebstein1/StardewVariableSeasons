@@ -22,7 +22,7 @@ What works:
 - The general store sells crop seeds for the next season as well as the current season.
 
 What's in development:
-- JojaMart will also sell crop seeds for th next as well as current season.
+- JojaMart will also sell crop seeds for th next as well as current season. (This likely won't be implemented until after 1.6 releases)
 - Maybe see if the season icon in the top-right can be updated based on the calendar season, rather than the in-game season.
 
 Known bugs:
