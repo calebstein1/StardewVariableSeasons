@@ -18,9 +18,9 @@ What works:
 - The season progresses the night after the randomly selected number, rather than on the 1st of each season.
 - The weather channel will give a hint as to the length of the current season from days 16 through 20 each season.
 - Festivals in close proximity of the end of a season will occur on the proper day, even if out of season.
+- Out of season crops will survive some amount of time past a season change before dying (still need to test winter transition).
 
 What's in development:
-- Out of season crops will survive some amount of time past a season change before dying.
 - The general store will sell crop seeds for the next season as well as the current season.
 - Maybe see if the season icon in the top-right can be updated based on the calendar season, rather than the in-game season.
 
