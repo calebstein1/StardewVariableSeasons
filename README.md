@@ -19,9 +19,10 @@ What works:
 - The weather channel will give a hint as to the length of the current season from days 16 through 20 each season.
 - Festivals in close proximity of the end of a season will occur on the proper day, even if out of season.
 - Out of season crops will survive some amount of time past a season change before dying (still need to test winter transition).
+- The general store sells crop seeds for the next season as well as the current season.
 
 What's in development:
-- The general store will sell crop seeds for the next season as well as the current season.
+- JojaMart will also sell crop seeds for th next as well as current season.
 - Maybe see if the season icon in the top-right can be updated based on the calendar season, rather than the in-game season.
 
 Known bugs:
