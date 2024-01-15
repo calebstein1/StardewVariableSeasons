@@ -72,6 +72,11 @@ namespace StardewVariableSeasons
                 prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Locations.SeedShop), "addStock"),
+                prefix: new HarmonyMethod(typeof(ShopStockPatches), nameof(ShopStockPatches.Prefix))
+            );
+            
             helper.Events.GameLoop.DayEnding += (sender, e) => DayEndingActions.OnDayEnding(Monitor, Helper, sender, e);
             helper.Events.GameLoop.SaveLoaded +=
                 (sender, e) => SaveLoadedActions.OnSaveLoaded(Monitor, Helper, sender, e);
