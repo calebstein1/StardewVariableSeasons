@@ -18,6 +18,7 @@ What works:
 - The season progresses the night after the randomly selected number, rather than on the 1st of each season.
 - The weather channel will give a hint as to the length of the current season from days 16 through 20 each season.
 - Festivals in close proximity of the end of a season will occur on the proper day, even if out of season.
+- Birthdays in close proximity to the beginning or end of a season will occur on the proper day, even if out of season.
 - Out of season crops will survive some amount of time past a season change before dying (still need to test winter transition).
 - The general store sells crop seeds for the next season as well as the current season.
 
@@ -26,7 +27,6 @@ What's in development:
 - Maybe see if the season icon in the top-right can be updated based on the calendar season, rather than the in-game season.
 
 Known bugs:
-- Birthdays in close proximity to the beginning or end of a season are entirely broken if they occur out of season. High priority to fix.
 - The calendar outside the general store is broken if the player attempts to view it out of season. High priority to fix.
 - The year will increment on the randomly rolled date that Winter changes to Spring, rather than being fixed on Spring 1. Medium priority, just because it should be a pretty easy fix, it'll just need to be tested pretty thoroughly for side-effects, since I'm not sure the ramifications of the year incrementing while it's still technically winter in-game.
 - Festivals that occur "out of season" will will use their "in season" maps. This is most noticable, for example, if Spirit's Eve occurs after the change to winter, the festival map will display the fall textures just for the festival, then revert back to winter textures the festival ends. This is probably fixable, but it's not really a priority right now. Canon can be that Pelican Town has a secret crew of prolific snow-shovelers.
