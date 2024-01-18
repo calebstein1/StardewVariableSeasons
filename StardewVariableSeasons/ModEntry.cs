@@ -68,6 +68,16 @@ namespace StardewVariableSeasons
             );
             
             harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), "isBirthday"),
+                prefix: new HarmonyMethod(typeof(NPCBirthdayFixes), nameof(NPCBirthdayFixes.Prefix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), "receiveGift"),
+                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ReplaceCurrentSeasonTranspiler))
+            );
+            
+            harmony.Patch(
                 original: AccessTools.Method(typeof(Crop), "Kill"),
                 prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix))
             );

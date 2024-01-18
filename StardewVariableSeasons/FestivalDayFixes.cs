@@ -36,7 +36,7 @@ namespace StardewVariableSeasons
             
             foreach (var code in codes.Where(code =>
                          code.opcode == OpCodes.Ldsfld &&
-                         code.operand.ToString().Contains("Game1::currentSeason")))
+                         code.operand.ToString().Contains("currentSeason")))
             {
                 code.operand = typeof(ModEntry).GetField("SeasonByDay", BindingFlags.Static | BindingFlags.Public);
             }
