@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Loader;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -85,6 +86,18 @@ namespace StardewVariableSeasons
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Locations.SeedShop), "addStock"),
                 prefix: new HarmonyMethod(typeof(ShopStockPatches), nameof(ShopStockPatches.Prefix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Menus.Billboard), "draw", new [] { typeof(SpriteBatch) }),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Constructor(typeof(StardewValley.Menus.Billboard), new [] { typeof(bool) }),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
             
             helper.Events.GameLoop.DayEnding += (sender, e) => DayEndingActions.OnDayEnding(Monitor, Helper, sender, e);
