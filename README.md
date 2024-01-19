@@ -24,6 +24,7 @@ What's in development:
 - Maybe see if the season icon in the top-right can be updated based on the calendar season, rather than the in-game season.
 
 Known bugs:
+- The season listed on the load save files list will always reflect the actual in-game season, not the calendar season. It's purely cosmetic and doesn't affect how the seasons progress in-game, but I'd like to fix it for clarity's sake if possible.
 - The year will increment on the randomly rolled date that Winter changes to Spring, rather than being fixed on Spring 1. Medium priority, just because it should be a pretty easy fix, it'll just need to be tested pretty thoroughly for side-effects, since I'm not sure the ramifications of the year incrementing while it's still technically winter in-game.
 - Festivals that occur "out of season" will will use their "in season" maps. This is most noticable, for example, if Spirit's Eve occurs after the change to winter, the festival map will display the fall textures just for the festival, then revert back to winter textures the festival ends. This is probably fixable, but it's not really a priority right now. Canon can be that Pelican Town has a secret crew of prolific snow-shovelers.
 - ??? (please report any you find)
