@@ -9,10 +9,6 @@ About halfway through a season, the weather channel will give hints as to the le
 
 This mod will also include a mechanic to allow out-of-season crops to survive for some amount of time based on a percentage that decreases each day the crop remains out of season, and will allow for the purchase of crops for the next season from the general store.
 
-This mod is still in very heavy development and is currently in an alpha state, I hope to have beta releases prepared by February 2024.
-
-The mod currently runs, but you'll need to compile it yourself for the time being. There will be official binary releases once we hit the beta stage, which will happen once the mod is feature complete and the focus can shift to taking care of the bugs.
-
 What works:
 - Randomly selecting a date of next season change occurs during the night prior to day 15 each season.
 - The season progresses the night after the randomly selected number, rather than on the 1st of each season.
