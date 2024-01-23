@@ -44,6 +44,13 @@ namespace StardewVariableSeasons
                 }
                 case 28:
                     Game1.dayOfMonth = 0;
+                    if (season.Next(ModEntry.SeasonByDay) == "spring")
+                    {
+                        Game1.year++;
+                        if (Game1.year == 2)
+                            Game1.addKentIfNecessary();
+                    }
+                    
                     ModEntry.SeasonByDay = season.Next(ModEntry.SeasonByDay);
                     var seasonByDay = new ModData
                     {
@@ -70,13 +77,6 @@ namespace StardewVariableSeasons
             ModEntry.CropSurvivalCounter = 0;
             SaveCropSurvivalCounter(helper);
             
-            if (season.Next(Game1.currentSeason) == "spring")
-            {
-                Game1.year++;
-                if (Game1.year == 2)
-                    Game1.addKentIfNecessary();
-            }
-
             Game1.currentSeason = season.Next(Game1.currentSeason);
             Game1.setGraphicsForSeason();
             Utility.ForAllLocations(delegate(GameLocation l)
