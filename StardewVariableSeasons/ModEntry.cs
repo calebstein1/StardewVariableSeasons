@@ -12,10 +12,6 @@ namespace StardewVariableSeasons
 {
     internal sealed class ModEntry : Mod
     {
-        public void TestFunc()
-        {
-            Monitor.Log("uhh... kill?", LogLevel.Debug);
-        }
         public static int ChangeDate;
         public static int CropSurvivalCounter;
         public static string SeasonByDay;
