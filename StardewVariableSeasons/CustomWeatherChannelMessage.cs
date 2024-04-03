@@ -1,4 +1,3 @@
-using StardewModdingAPI;
 using StardewValley;
 
 namespace StardewVariableSeasons

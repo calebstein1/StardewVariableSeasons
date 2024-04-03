@@ -1,8 +1,5 @@
-using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
 
 namespace StardewVariableSeasons
 {
