@@ -2,11 +2,9 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
-using StardewValley;
 
 namespace StardewVariableSeasons
 {
-    [HarmonyPatch(typeof(Game1), "_newDayAfterFade")]
     public static class NewDayAfterFadeTranspiler
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -15,7 +13,7 @@ namespace StardewVariableSeasons
             
             foreach (var code in codes.Where(code =>
                          code.opcode == OpCodes.Call &&
-                         code.operand.ToString().Contains("StardewValley.Game1::newSeason()")))
+                         code.operand.ToString()!.Contains("StardewValley.Game1::newSeason()")))
             {
                 code.opcode = OpCodes.Nop;
             }
