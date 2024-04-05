@@ -10,12 +10,15 @@ namespace StardewVariableSeasons
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
-            
-            foreach (var code in codes.Where(code =>
-                         code.opcode == OpCodes.Call &&
-                         code.operand.ToString()!.Contains("StardewValley.Game1::newSeason()")))
+
+            for (var i = 0; i < codes.Count; i++)
             {
-                code.opcode = OpCodes.Nop;
+                if (codes[i].opcode == OpCodes.Ble_S &&
+                    codes[i - 2].opcode == OpCodes.Ldsfld &&
+                    codes[i - 2].operand.ToString()!.Contains("dayOfMonth"))
+                {
+                    codes[i].opcode = OpCodes.Jmp;
+                }
             }
 
             return codes.AsEnumerable();

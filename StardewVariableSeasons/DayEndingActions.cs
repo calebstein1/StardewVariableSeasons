@@ -45,8 +45,6 @@ namespace StardewVariableSeasons
                     if (season.Next(ModEntry.SeasonByDay) == "spring")
                     {
                         Game1.year++;
-                        if (Game1.year == 2)
-                            Game1.addKentIfNecessary();
                     }
                     
                     ModEntry.SeasonByDay = season.Next(ModEntry.SeasonByDay);
@@ -57,6 +55,22 @@ namespace StardewVariableSeasons
                         
                     helper.Data.WriteSaveData("season-by-day", seasonByDay);
                     break;
+            }
+
+            if (Game1.dayOfMonth >= ModEntry.ChangeDate)
+            {
+                Game1.season = Game1.season switch
+                {
+                    Season.Spring => Season.Summer,
+                    Season.Summer => Season.Fall,
+                    Season.Fall => Season.Winter,
+                    Season.Winter => Season.Spring,
+                    _ => Game1.season
+                };
+
+                Game1.timeOfDay = 600;
+                Game1.setGraphicsForSeason();
+                Game1.netWorldState.Value.UpdateFromGame1();
             }
 
             if (ModEntry.CropSurvivalCounter < 5)
@@ -74,13 +88,6 @@ namespace StardewVariableSeasons
             monitor.Log("Change to next season", LogLevel.Debug);
             ModEntry.CropSurvivalCounter = 0;
             SaveCropSurvivalCounter(helper);
-            
-            Game1.currentSeason = season.Next(Game1.currentSeason);
-            Game1.setGraphicsForSeason();
-            Utility.ForAllLocations(delegate(GameLocation l)
-            {
-                l.seasonUpdate(Game1.GetSeasonForLocation(l));
-            });
         }
     }
 }
