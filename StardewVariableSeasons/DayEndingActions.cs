@@ -57,35 +57,25 @@ namespace StardewVariableSeasons
                     break;
             }
 
-            if (Game1.dayOfMonth >= ModEntry.ChangeDate)
-            {
-                Game1.season = Game1.season switch
-                {
-                    Season.Spring => Season.Summer,
-                    Season.Summer => Season.Fall,
-                    Season.Fall => Season.Winter,
-                    Season.Winter => Season.Spring,
-                    _ => Game1.season
-                };
-
-                Game1.timeOfDay = 600;
-                Game1.setGraphicsForSeason();
-                Game1.netWorldState.Value.UpdateFromGame1();
-            }
-
             if (ModEntry.CropSurvivalCounter < 5)
             {
                 ModEntry.CropSurvivalCounter++;
                 SaveCropSurvivalCounter(helper);
             }
 
-            monitor.Log($"Current actual season is {Game1.currentSeason}", LogLevel.Debug);
-            monitor.Log($"Current season by day is {ModEntry.SeasonByDay}", LogLevel.Debug);
+            monitor.Log($"Current actual season is {Game1.season.ToString()}", LogLevel.Debug);
+            monitor.Log($"Current season by day is {ModEntry.SeasonByDay.ToString()}", LogLevel.Debug);
             monitor.Log($"Next season change on {changeDate.ToString()}", LogLevel.Debug);
             monitor.Log($"Crop survival counter is {ModEntry.CropSurvivalCounter.ToString()}", LogLevel.Debug);
 
             if (Game1.Date.DayOfMonth != changeDate) return;
             monitor.Log("Change to next season", LogLevel.Debug);
+            Game1.season = season.Next(Game1.season);
+
+            Game1.timeOfDay = 600;
+            Game1.setGraphicsForSeason();
+            Game1.netWorldState.Value.UpdateFromGame1();
+            
             ModEntry.CropSurvivalCounter = 0;
             SaveCropSurvivalCounter(helper);
         }
