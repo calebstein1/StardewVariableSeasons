@@ -4,9 +4,9 @@ using StardewValley;
 
 namespace StardewVariableSeasons
 {
-    public sealed class Seasons
+    public static class SeasonUtils
     {
-        public int GenNextChangeDate()
+        public static int GenNextChangeDate()
         {
             var rnd = new Random();
             var rndNum = rnd.Next(100);
@@ -36,11 +36,11 @@ namespace StardewVariableSeasons
             return 28;
         }
         
-        public Season Next(Season season)
+        public static Season GetNextSeason(Season season)
         {
             return season == Season.Winter ? Season.Spring : season + 1;
         }
-        public Season Prev(Season season)
+        public static Season GetPrevSeason(Season season)
         {
             return season == Season.Spring ? Season.Winter : season - 1;
         }
