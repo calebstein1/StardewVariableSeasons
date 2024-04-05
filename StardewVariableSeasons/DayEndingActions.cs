@@ -23,8 +23,8 @@ namespace StardewVariableSeasons
             var season = new Seasons();
             var changeDate = ModEntry.ChangeDate;
             
-            monitor.Log($"Next season is {season.Next(Game1.currentSeason)}", LogLevel.Debug);
-            monitor.Log($"Previous season was {season.Prev(Game1.currentSeason)}", LogLevel.Debug);
+            monitor.Log($"Next season is {season.Next(Game1.season).ToString()}", LogLevel.Debug);
+            monitor.Log($"Previous season was {season.Prev(Game1.season).ToString()}", LogLevel.Debug);
 
             monitor.Log($"Current day is {Game1.Date.DayOfMonth.ToString()}", LogLevel.Debug);
             switch (Game1.dayOfMonth)
@@ -42,7 +42,7 @@ namespace StardewVariableSeasons
                 }
                 case 28:
                     Game1.dayOfMonth = 0;
-                    if (season.Next(ModEntry.SeasonByDay) == "spring")
+                    if (season.Next(ModEntry.SeasonByDay) == Season.Spring)
                     {
                         Game1.year++;
                     }

@@ -9,7 +9,7 @@ namespace StardewVariableSeasons
     {
         public static int ChangeDate;
         public static int CropSurvivalCounter;
-        public static string SeasonByDay;
+        public static Season SeasonByDay;
         
         public override void Entry(IModHelper helper)
         {

@@ -1,5 +1,6 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace StardewVariableSeasons
 {
@@ -11,12 +12,9 @@ namespace StardewVariableSeasons
         
         public static void OnSaveLoaded(IMonitor monitor, IModHelper helper, object sender, SaveLoadedEventArgs e)
         {
-            _nextSeasonChange = helper.Data.ReadSaveData<ModData>("next-season-change");
-            _seasonByDay = helper.Data.ReadSaveData<ModData>("season-by-day");
-            _cropSurvivalCounter = helper.Data.ReadSaveData<ModData>("crop-survival-counter");
-            
             try
             {
+                _nextSeasonChange = helper.Data.ReadSaveData<ModData>("next-season-change");
                 ModEntry.ChangeDate = _nextSeasonChange.NextSeasonChange;
             }
             catch
@@ -31,11 +29,12 @@ namespace StardewVariableSeasons
             
             try
             {
+                _seasonByDay = helper.Data.ReadSaveData<ModData>("season-by-day");
                 ModEntry.SeasonByDay = _seasonByDay.SeasonByDay;
             }
             catch
             {
-                ModEntry.SeasonByDay = "spring";
+                ModEntry.SeasonByDay = Season.Spring;
                 var seasonByDay = new ModData
                 {
                     SeasonByDay = ModEntry.SeasonByDay
@@ -46,6 +45,7 @@ namespace StardewVariableSeasons
             
             try
             {
+                _cropSurvivalCounter = helper.Data.ReadSaveData<ModData>("crop-survival-counter");
                 ModEntry.CropSurvivalCounter = _cropSurvivalCounter.CropSurvivalCounter;
             }
             catch
