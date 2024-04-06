@@ -27,7 +27,8 @@ namespace StardewVariableSeasons
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.IsFestPrefix))
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
 
             harmony.Patch(
@@ -56,17 +57,14 @@ namespace StardewVariableSeasons
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "getStartTimeOfFestival"),
-                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ReplaceCurrentSeasonTranspiler))
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), "isBirthday"),
-                prefix: new HarmonyMethod(typeof(NPCBirthdayFixes), nameof(NPCBirthdayFixes.Prefix))
-            );
-            
-            harmony.Patch(
-                original: AccessTools.Method(typeof(NPC), "receiveGift"),
-                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ReplaceCurrentSeasonTranspiler))
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
             
             harmony.Patch(
@@ -74,10 +72,10 @@ namespace StardewVariableSeasons
                 prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix))
             );
 
-            harmony.Patch(
+            /*harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Locations.SeedShop), "addStock"),
                 prefix: new HarmonyMethod(typeof(ShopStockPatches), nameof(ShopStockPatches.Prefix))
-            );
+            );*/
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Menus.Billboard), "draw", new [] { typeof(SpriteBatch) }),
