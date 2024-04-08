@@ -23,7 +23,6 @@ namespace StardewVariableSeasons
             var changeDate = ModEntry.ChangeDate;
             
             monitor.Log($"Next season is {SeasonUtils.GetNextSeason(Game1.season).ToString()}", LogLevel.Debug);
-            monitor.Log($"Previous season was {SeasonUtils.GetPrevSeason(Game1.season).ToString()}", LogLevel.Debug);
 
             monitor.Log($"Current day is {Game1.Date.DayOfMonth.ToString()}", LogLevel.Debug);
             switch (Game1.dayOfMonth)

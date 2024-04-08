@@ -40,9 +40,5 @@ namespace StardewVariableSeasons
         {
             return season == Season.Winter ? Season.Spring : season + 1;
         }
-        public static Season GetPrevSeason(Season season)
-        {
-            return season == Season.Spring ? Season.Winter : season - 1;
-        }
     }
 }
