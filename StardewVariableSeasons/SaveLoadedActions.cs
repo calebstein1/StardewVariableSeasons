@@ -8,8 +8,10 @@ namespace StardewVariableSeasons
     {
         private static ModData _nextSeasonChange;
         private static ModData _seasonByDay;
-        private static ModDataLegacy _seasonByDayLegacy;
         private static ModData _cropSurvivalCounter;
+        private static ModDataLegacy _nextSeasonChangeLegacy;
+        private static ModDataLegacy _seasonByDayLegacy;
+        private static ModDataLegacy _cropSurvivalCounterLegacy;
         
         public static void OnSaveLoaded(IMonitor monitor, IModHelper helper, object sender, SaveLoadedEventArgs e)
         {
@@ -20,9 +22,19 @@ namespace StardewVariableSeasons
             }
             catch
             {
+                try
+                {
+                    _nextSeasonChangeLegacy = helper.Data.ReadSaveData<ModDataLegacy>("next-season-change");
+                    ModEntry.ChangeDate = _nextSeasonChangeLegacy.NextSeasonChange;
+                }
+                catch
+                {
+                    ModEntry.ChangeDate = 28;
+                }
+                
                 var nextSeasonChange = new ModData
                 {
-                    NextSeasonChange = 28
+                    NextSeasonChange = ModEntry.ChangeDate
                 };
             
                 helper.Data.WriteSaveData("next-season-change", nextSeasonChange);
@@ -60,7 +72,16 @@ namespace StardewVariableSeasons
             }
             catch
             {
-                ModEntry.CropSurvivalCounter = 5;
+                try
+                {
+                    _cropSurvivalCounterLegacy = helper.Data.ReadSaveData<ModDataLegacy>("crop-survival-counter");
+                    ModEntry.CropSurvivalCounter = _cropSurvivalCounterLegacy.CropSurvivalCounter;
+                }
+                catch
+                {
+                    ModEntry.CropSurvivalCounter = 5;
+                }
+
                 var cropSurvivalCounter = new ModData
                 {
                     CropSurvivalCounter = ModEntry.CropSurvivalCounter
