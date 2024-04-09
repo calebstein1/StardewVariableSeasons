@@ -40,5 +40,16 @@ namespace StardewVariableSeasons
         {
             return season == Season.Winter ? Season.Spring : season + 1;
         }
+
+        public static Season StrToSeason(string season)
+        {
+            return season switch
+            {
+                "summer" => Season.Summer,
+                "fall" => Season.Fall,
+                "winter" => Season.Winter,
+                _ => Season.Spring
+            };
+        }
     }
 }

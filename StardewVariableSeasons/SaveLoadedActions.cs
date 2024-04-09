@@ -8,6 +8,7 @@ namespace StardewVariableSeasons
     {
         private static ModData _nextSeasonChange;
         private static ModData _seasonByDay;
+        private static ModDataLegacy _seasonByDayLegacy;
         private static ModData _cropSurvivalCounter;
         
         public static void OnSaveLoaded(IMonitor monitor, IModHelper helper, object sender, SaveLoadedEventArgs e)
@@ -34,12 +35,21 @@ namespace StardewVariableSeasons
             }
             catch
             {
-                ModEntry.SeasonByDay = Season.Spring;
+                try
+                {
+                    _seasonByDayLegacy = helper.Data.ReadSaveData<ModDataLegacy>("season-by-day");
+                    ModEntry.SeasonByDay = SeasonUtils.StrToSeason(_seasonByDayLegacy.SeasonByDay);
+                }
+                catch
+                {
+                    ModEntry.SeasonByDay = Season.Spring;
+                }
+                    
                 var seasonByDay = new ModData
                 {
                     SeasonByDay = ModEntry.SeasonByDay
                 };
-                    
+                
                 helper.Data.WriteSaveData("season-by-day", seasonByDay);
             }
             
