@@ -9,6 +9,8 @@ I'm not sure if there's an easy way to fix this, but if this is an issue you com
 
 - [x] Season changes on randomly rolled day
 - [X] Birthdays and festivals occur on the proper calendar day
+- [ ] Save file compatibility with pre-1.6 versions
+- [ ] Out-of-season crop death randomization works
 - [ ] General store stock contains current and next season inventory
 
 # Stardew Variable Seasons
