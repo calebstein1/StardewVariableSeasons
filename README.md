@@ -1,15 +1,15 @@
 ## Stardew Valley 1.6 Update 
 
 The mod builds and the core functionality runs properly with Stardew Valley 1.6.
-The current version (beta v0.4) is a feature regression over the previous version, but it supports the main functionality of the mod (randomizing the season change date).
-The next version will restore feature-parity (randomized out-of-season crop survival and shop stock changes).
+The current version (beta v0.4) is a feature regression over the previous version, but it supports the main functionality of the mod (randomizing the season change date and allowing crops to survive out of season).
+The next version will restore feature-parity (shop stock changes).
 
 ### 1.6 Development Roadmap (if a feature isn't listed, it's already working)
 
 - [x] Season changes on randomly rolled day
 - [X] Birthdays and festivals occur on the proper calendar day
 - [X] Save file compatibility with pre-1.6 versions
-- [ ] Out-of-season crop death randomization works
+- [X] Out-of-season crop death randomization works
 - [ ] General store stock contains current and next season inventory
 
 # Stardew Variable Seasons
