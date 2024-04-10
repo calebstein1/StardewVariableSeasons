@@ -4,7 +4,7 @@ namespace StardewVariableSeasons
 {
     public static class CropDeathRandomizer
     {
-        public static bool Prefix()
+        public static void Prefix(out bool __state)
         {
             var rnd = new Random();
             var rndNum = rnd.Next(100);
@@ -19,7 +19,15 @@ namespace StardewVariableSeasons
                 _ => 100
             };
 
-            return rndNum < survivalPercentage;
+            __state = rndNum >= survivalPercentage;
+        }
+
+        public static void Postfix(bool __state, ref bool __result)
+        {
+            if (__state)
+            {
+                __result = true;
+            }
         }
     }
 }

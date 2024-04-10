@@ -68,8 +68,9 @@ namespace StardewVariableSeasons
             );
             
             harmony.Patch(
-                original: AccessTools.Method(typeof(Crop), "Kill"),
-                prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix))
+                original: AccessTools.Method(typeof(Crop), "IsInSeason", new [] { typeof(GameLocation) }),
+                prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix)),
+                postfix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Postfix))
             );
 
             /*harmony.Patch(
