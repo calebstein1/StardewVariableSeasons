@@ -29,7 +29,7 @@ namespace StardewVariableSeasons
                 }
                 catch
                 {
-                    ModEntry.ChangeDate = 28;
+                    ModEntry.ChangeDate = 0;
                 }
                 
                 var nextSeasonChange = new ModData

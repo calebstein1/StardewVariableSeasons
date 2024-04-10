@@ -33,7 +33,7 @@ namespace StardewVariableSeasons
                     return result;
             }
 
-            return 28;
+            return 0;
         }
         
         public static Season GetNextSeason(Season season)
