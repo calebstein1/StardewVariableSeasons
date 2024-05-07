@@ -54,7 +54,7 @@ namespace StardewVariableSeasons
                 }
                 catch
                 {
-                    ModEntry.SeasonByDay = Season.Spring;
+                    ModEntry.SeasonByDay = Game1.season;
                 }
                     
                 var seasonByDay = new ModData
