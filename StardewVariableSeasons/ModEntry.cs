@@ -16,11 +16,6 @@ namespace StardewVariableSeasons
             var harmony = new Harmony(ModManifest.UniqueID);
             
             harmony.Patch(
-                original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
-                transpiler: new HarmonyMethod(typeof(NewDayAfterFadeTranspiler), nameof(NewDayAfterFadeTranspiler.Transpiler))
-            );
-            
-            harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Objects.TV), "getWeatherForecast"),
                 postfix: new HarmonyMethod(typeof(CustomWeatherChannelMessage), nameof(CustomWeatherChannelMessage.Postfix))
             );
