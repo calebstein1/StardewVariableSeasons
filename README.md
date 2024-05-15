@@ -34,6 +34,7 @@ What works:
 - The general store sells crop seeds for the next season as well as the current season.
 - The calendar outside the general store shows the correct season by day when viewed out of season.
 - The year will increment on Spring 1 by the calendar, whether or not it's still Winter in-game.
+- Settings panel to change the season and calendar should they become incorrect (requires [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098))
 
 What's in development:
 
