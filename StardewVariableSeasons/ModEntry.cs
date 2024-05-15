@@ -1,3 +1,4 @@
+using System.Runtime.Loader;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -84,7 +85,9 @@ namespace StardewVariableSeasons
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
                 postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
-            
+
+            helper.Events.GameLoop.GameLaunched +=
+                (sender, e) => GameLaunchedActions.OnGameLaunched(Monitor, Helper, ModManifest, sender, e);
             helper.Events.GameLoop.DayEnding += (sender, e) => DayEndingActions.OnDayEnding(Monitor, Helper, sender, e);
             helper.Events.GameLoop.SaveLoaded +=
                 (sender, e) => SaveLoadedActions.OnSaveLoaded(Monitor, Helper, sender, e);
