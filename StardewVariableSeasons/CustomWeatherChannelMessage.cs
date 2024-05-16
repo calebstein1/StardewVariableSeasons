@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
 using StardewValley;
 
 namespace StardewVariableSeasons
@@ -22,10 +27,10 @@ namespace StardewVariableSeasons
 
             return message;
         }
-        
+
         public static void Postfix(ref string __result)
         {
-            if (Game1.dayOfMonth > 15 && Game1.dayOfMonth < 21)
+            if (Game1.dayOfMonth > 15 && Game1.dayOfMonth < 23)
                 __result += $" {GetWeatherMessage()}";
         }
     }
