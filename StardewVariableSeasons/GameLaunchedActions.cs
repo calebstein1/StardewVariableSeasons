@@ -8,11 +8,30 @@ namespace StardewVariableSeasons
     {
         internal Season Season;
         internal Season SeasonByDay;
+        internal int Day;
+        internal int ChangeDate;
     }
     public static class GameLaunchedActions
     {
         private static void UpdateState(ModConfig config, IModHelper helper)
         {
+            if (!config.Day.Equals(Game1.dayOfMonth))
+            {
+                Game1.dayOfMonth = config.Day;
+            }
+
+            if (!config.ChangeDate.Equals(ModEntry.ChangeDate))
+            {
+                ModEntry.ChangeDate = config.ChangeDate;
+
+                var changeDate = new ModData
+                {
+                    NextSeasonChange = ModEntry.ChangeDate
+                };
+                
+                helper.Data.WriteSaveData("next-season-change", changeDate);
+            }
+            
             Game1.season = config.Season;
             ModEntry.SeasonByDay = config.SeasonByDay;
             Game1.setGraphicsForSeason();
@@ -33,14 +52,18 @@ namespace StardewVariableSeasons
             var config = new ModConfig
             {
                 Season = Game1.season,
-                SeasonByDay = ModEntry.SeasonByDay
+                SeasonByDay = ModEntry.SeasonByDay,
+                Day = Game1.dayOfMonth,
+                ChangeDate = ModEntry.ChangeDate
             };
             configMenu.Register(
                 mod: manifest,
                 reset: () => config = new ModConfig
                 {
                     Season = Game1.season,
-                    SeasonByDay = ModEntry.SeasonByDay
+                    SeasonByDay = ModEntry.SeasonByDay,
+                    Day = Game1.dayOfMonth,
+                    ChangeDate = ModEntry.ChangeDate
                 },
                 save: () => UpdateState(config, helper)
             );
@@ -64,6 +87,29 @@ namespace StardewVariableSeasons
                 getValue: () => ModEntry.SeasonByDay.ToString(),
                 setValue: value => config.SeasonByDay = SeasonUtils.StrToSeason(value.ToLower()),
                 allowedValues: new[] { "Spring", "Summer", "Fall", "Winter" }
+            );
+            
+            configMenu.AddParagraph(
+                mod: manifest,
+                text: () => "Developer settings below this point... proceed with caution!"
+            );
+            
+            configMenu.AddNumberOption(
+                mod: manifest,
+                name: () => "Day",
+                getValue: () => Game1.dayOfMonth,
+                setValue: value => config.Day = value,
+                min: 1,
+                max: 28
+            );
+            
+            configMenu.AddNumberOption(
+                mod: manifest,
+                name: () => "Season Change Day",
+                getValue: () => ModEntry.ChangeDate + 1,
+                setValue: value => config.ChangeDate = value - 1,
+                min: 1,
+                max: 28
             );
         }
     }
