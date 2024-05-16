@@ -8,9 +8,9 @@ namespace StardewVariableSeasons
 {
     internal sealed class ModEntry : Mod
     {
-        public static int ChangeDate;
-        public static int CropSurvivalCounter;
-        public static Season SeasonByDay;
+        public static int ChangeDate { get; set; }
+        public static int CropSurvivalCounter { get; set; }
+        public static Season SeasonByDay { get; set; }
         
         public override void Entry(IModHelper helper)
         {
