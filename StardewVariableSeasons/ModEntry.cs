@@ -22,6 +22,18 @@ namespace StardewVariableSeasons
             );
 
             harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "UpdateWeatherForNewDay"),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
+            
+            harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
                 postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
