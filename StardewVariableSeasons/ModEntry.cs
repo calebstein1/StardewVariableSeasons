@@ -3,6 +3,8 @@ using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace StardewVariableSeasons
 {
@@ -17,7 +19,7 @@ namespace StardewVariableSeasons
             var harmony = new Harmony(ModManifest.UniqueID);
             
             harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Objects.TV), "getWeatherForecast"),
+                original: AccessTools.Method(typeof(TV), "getWeatherForecast"),
                 postfix: new HarmonyMethod(typeof(CustomWeatherChannelMessage), nameof(CustomWeatherChannelMessage.Postfix))
             );
 
@@ -34,7 +36,7 @@ namespace StardewVariableSeasons
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(WorldDate), nameof(WorldDate.Now)),
+                original: AccessTools.Method(typeof(WorldDate), "Now"),
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
                 postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
@@ -93,13 +95,13 @@ namespace StardewVariableSeasons
             );*/
             
             harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Menus.Billboard), "draw", new [] { typeof(SpriteBatch) }),
+                original: AccessTools.Method(typeof(Billboard), "draw", new [] { typeof(SpriteBatch) }),
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
                 postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
             
             harmony.Patch(
-                original: AccessTools.Constructor(typeof(StardewValley.Menus.Billboard), new [] { typeof(bool) }),
+                original: AccessTools.Constructor(typeof(Billboard), new [] { typeof(bool) }),
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
                 postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
