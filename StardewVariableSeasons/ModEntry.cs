@@ -32,6 +32,12 @@ namespace StardewVariableSeasons
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
                 postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(WorldDate), nameof(WorldDate.Now)),
+                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+            );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
