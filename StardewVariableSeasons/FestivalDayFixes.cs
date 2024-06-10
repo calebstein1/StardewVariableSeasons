@@ -1,4 +1,7 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using StardewValley;
 
 namespace StardewVariableSeasons
@@ -25,6 +28,18 @@ namespace StardewVariableSeasons
             Game1.currentSeason = Game1.season.ToString().ToLower();
             Game1.Date.Season = Game1.season;
             Game1.Date.SeasonKey = Game1.season.ToString().ToLower();
+        }
+
+        internal static IEnumerable<CodeInstruction> SeasonTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = instructions.ToList();
+
+            foreach (var code in codes.Where(code => (code.operand as FieldInfo)?.Name is nameof(Game1.season)))
+            {
+                code.operand = CodeInstruction.LoadField(typeof(ModEntry), "_seasonByDay").operand;
+            }
+
+            return codes.AsEnumerable();
         }
     }
 }

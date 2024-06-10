@@ -1,4 +1,3 @@
-using System.Runtime.Loader;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -12,7 +11,12 @@ namespace StardewVariableSeasons
     {
         public static int ChangeDate { get; set; }
         public static int CropSurvivalCounter { get; set; }
-        public static Season SeasonByDay { get; set; }
+        public static Season SeasonByDay
+        {
+            get => _seasonByDay;
+            set => _seasonByDay = value;
+        }
+        private static Season _seasonByDay;
         
         public override void Entry(IModHelper helper)
         {
@@ -37,8 +41,7 @@ namespace StardewVariableSeasons
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(WorldDate), "Now"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.SeasonTranspiler))
             );
             
             harmony.Patch(
