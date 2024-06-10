@@ -11,13 +11,10 @@ namespace StardewVariableSeasons
     {
         public static int ChangeDate { get; set; }
         public static int CropSurvivalCounter { get; set; }
-        public static Season SeasonByDay
-        {
-            get => _seasonByDay;
-            set => _seasonByDay = value;
-        }
-        private static Season _seasonByDay;
-        
+        public static Season SeasonByDay;
+        public static string CurrentSeason => Utility.getSeasonKey(SeasonByDay);
+        public static int SeasonIndex => (int)SeasonByDay;
+
         public override void Entry(IModHelper helper)
         {
             var harmony = new Harmony(ModManifest.UniqueID);
@@ -82,8 +79,7 @@ namespace StardewVariableSeasons
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), "isBirthday"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.SeasonTranspiler))
             );
             
             harmony.Patch(

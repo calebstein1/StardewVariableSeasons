@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using StardewValley;
 
@@ -34,9 +35,22 @@ namespace StardewVariableSeasons
         {
             var codes = instructions.ToList();
 
-            foreach (var code in codes.Where(code => (code.operand as FieldInfo)?.Name is nameof(Game1.season)))
+            for (var i = 0; i < codes.Count; i++)
             {
-                code.operand = CodeInstruction.LoadField(typeof(ModEntry), "_seasonByDay").operand;
+                if (codes[i].opcode == OpCodes.Ldsfld && (codes[i].operand as FieldInfo)?.Name is nameof(Game1.season))
+                {
+                    codes[i] = CodeInstruction.LoadField(typeof(ModEntry), nameof(ModEntry.SeasonByDay));
+                }
+                else if (codes[i].opcode == OpCodes.Call &&
+                         (codes[i].operand as MethodInfo)?.Name is "get_currentSeason")
+                {
+                    codes[i] = CodeInstruction.Call(typeof(ModEntry), "get_CurrentSeason");
+                }
+                else if (codes[i].opcode == OpCodes.Call &&
+                         (codes[i].operand as MethodInfo)?.Name is "get_seasonIndex")
+                {
+                    codes[i] = CodeInstruction.Call(typeof(ModEntry), "get_SeasonIndex");
+                }
             }
 
             return codes.AsEnumerable();
