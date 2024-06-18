@@ -69,10 +69,7 @@ namespace StardewVariableSeasons
             if (Game1.Date.DayOfMonth != changeDate) return;
             monitor.Log("Change to next season");
             Game1.season = SeasonUtils.GetNextSeason(Game1.season);
-
-            Game1.timeOfDay = 600;
-            Game1.setGraphicsForSeason();
-            Game1.netWorldState.Value.UpdateFromGame1();
+            helper.Reflection.GetMethod(typeof(Game1), "OnNewSeason").Invoke();
             
             ModEntry.CropSurvivalCounter = 0;
             SaveCropSurvivalCounter(helper);
