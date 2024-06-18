@@ -18,6 +18,17 @@ namespace StardewVariableSeasons
         public override void Entry(IModHelper helper)
         {
             var harmony = new Harmony(ModManifest.UniqueID);
+
+            foreach (var type in typeof(Game1).Assembly.GetTypes())
+            {
+                if (type.FullName.StartsWith("StardewValley.Game1+<_newDayAfterFade>"))
+                {
+                    harmony.Patch(
+                        original: AccessTools.Method(type, "MoveNext"),
+                        transpiler: new HarmonyMethod(typeof(SeasonUtils), nameof(SeasonUtils.SeasonForSaveTranspiler))
+                    );
+                }
+            }
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(TV), "getWeatherForecast"),

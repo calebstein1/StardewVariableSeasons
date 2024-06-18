@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
 using StardewValley;
 
 namespace StardewVariableSeasons
@@ -50,6 +54,20 @@ namespace StardewVariableSeasons
                 "winter" => Season.Winter,
                 _ => Season.Spring
             };
+        }
+
+        internal static IEnumerable<CodeInstruction> SeasonForSaveTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = instructions.ToList();
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Call && (codes[i].operand as MethodInfo)?.Name is "get_seasonIndex")
+                {
+                    codes[i] = CodeInstruction.Call(typeof(ModEntry), "get_SeasonIndex");
+                }
+            }
+
+            return codes.AsEnumerable();
         }
     }
 }
