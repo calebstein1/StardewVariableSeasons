@@ -87,11 +87,6 @@ namespace StardewVariableSeasons
                 prefix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Prefix)),
                 postfix: new HarmonyMethod(typeof(CropDeathRandomizer), nameof(CropDeathRandomizer.Postfix))
             );
-
-            /*harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Locations.SeedShop), "addStock"),
-                prefix: new HarmonyMethod(typeof(ShopStockPatches), nameof(ShopStockPatches.Prefix))
-            );*/
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Billboard), "draw", new [] { typeof(SpriteBatch) }),
