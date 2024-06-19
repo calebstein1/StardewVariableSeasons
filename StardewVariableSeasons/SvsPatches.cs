@@ -7,28 +7,11 @@ using StardewValley;
 
 namespace StardewVariableSeasons
 {
-    public static class Patches
+    public static class SvsPatches
     {
         public static void LoadFestPrefix(ref string festival)
         {
             festival = $"{ModEntry.SeasonByDay.ToString().ToLower()}{Game1.dayOfMonth}";
-        }
-
-        public static void ResetSeasonPrefix(out Season __state)
-        {
-            __state = Game1.season;
-            Game1.season = ModEntry.SeasonByDay;
-            Game1.currentSeason = ModEntry.SeasonByDay.ToString().ToLower();
-            Game1.Date.Season = ModEntry.SeasonByDay;
-            Game1.Date.SeasonKey = ModEntry.SeasonByDay.ToString().ToLower();
-        }
-        
-        public static void ResetSeasonPostfix(Season __state)
-        {
-            Game1.season = __state;
-            Game1.currentSeason = Game1.season.ToString().ToLower();
-            Game1.Date.Season = Game1.season;
-            Game1.Date.SeasonKey = Game1.season.ToString().ToLower();
         }
 
         internal static IEnumerable<CodeInstruction> SeasonTranspiler(IEnumerable<CodeInstruction> instructions)
@@ -53,6 +36,30 @@ namespace StardewVariableSeasons
                 }
             }
 
+            return codes.AsEnumerable();
+        }
+
+        internal static IEnumerable<CodeInstruction> ExtractTenMinuteMethod(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = instructions.ToList();
+            
+            foreach (var code in codes.Where(code => code.opcode == OpCodes.Ldftn))
+            {
+                ModEntry.TenMinuteMethod = code.operand as MethodInfo;
+            }
+            
+            return codes.AsEnumerable();
+        }
+        
+        internal static IEnumerable<CodeInstruction> ExtractGetBirthdaysMethod(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = instructions.ToList();
+            
+            foreach (var code in codes.Where(code => code.opcode == OpCodes.Ldftn))
+            {
+                ModEntry.GetBirthdaysMethod = code.operand as MethodInfo;
+            }
+            
             return codes.AsEnumerable();
         }
     }

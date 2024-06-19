@@ -1,3 +1,4 @@
+using System.Reflection;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -14,10 +15,22 @@ namespace StardewVariableSeasons
         public static Season SeasonByDay;
         public static string CurrentSeason => Utility.getSeasonKey(SeasonByDay);
         public static int SeasonIndex => (int)SeasonByDay;
-
+        internal static MethodInfo TenMinuteMethod = null;
+        internal static MethodInfo GetBirthdaysMethod = null;
+        
         public override void Entry(IModHelper helper)
         {
             var harmony = new Harmony(ModManifest.UniqueID);
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), nameof(Game1.performTenMinuteClockUpdate)),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.ExtractTenMinuteMethod))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Billboard), nameof(Billboard.GetBirthdays)),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.ExtractGetBirthdaysMethod))
+            );
 
             foreach (var type in typeof(Game1).Assembly.GetTypes())
             {
@@ -25,7 +38,14 @@ namespace StardewVariableSeasons
                 {
                     harmony.Patch(
                         original: AccessTools.Method(type, "MoveNext"),
-                        transpiler: new HarmonyMethod(typeof(Patches), nameof(Patches.SeasonTranspiler))
+                        transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+                    );
+                }
+                else if (type.FullName.Equals("StardewValley.Game1+<>c"))
+                {
+                    harmony.Patch(
+                        original: AccessTools.Method(type, TenMinuteMethod.Name),
+                        transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
                     );
                 }
             }
@@ -37,54 +57,43 @@ namespace StardewVariableSeasons
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), "UpdateWeatherForNewDay"),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(WorldDate), "Now"),
-                transpiler: new HarmonyMethod(typeof(Patches), nameof(Patches.SeasonTranspiler))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Event), "tryToLoadFestival"),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.LoadFestPrefix))
-            );
-            
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Game1), "performTenMinuteClockUpdate"),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.LoadFestPrefix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), "warpFarmer",
                     new[] { typeof(LocationRequest), typeof(int), typeof(int), typeof(int) }),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), "AreStoresClosedForFestival"),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "getStartTimeOfFestival"),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), "isBirthday"),
-                transpiler: new HarmonyMethod(typeof(Patches), nameof(Patches.SeasonTranspiler))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
             
             harmony.Patch(
@@ -95,14 +104,28 @@ namespace StardewVariableSeasons
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Billboard), "draw", new [] { typeof(SpriteBatch) }),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Billboard), nameof(Billboard.GetEventsForDay)),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
+
+            foreach (var type in typeof(Billboard).Assembly.GetTypes())
+            {
+                if (type.FullName.StartsWith("StardewValley.Menus.Billboard+<>c__DisplayClass"))
+                {
+                    harmony.Patch(
+                        original: AccessTools.Method(type, GetBirthdaysMethod.Name),
+                        transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+                    );
+                }
+            }
             
             harmony.Patch(
                 original: AccessTools.Constructor(typeof(Billboard), new [] { typeof(bool) }),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
 
             helper.Events.GameLoop.GameLaunched +=
