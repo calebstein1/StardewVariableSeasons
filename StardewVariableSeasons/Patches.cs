@@ -7,7 +7,7 @@ using StardewValley;
 
 namespace StardewVariableSeasons
 {
-    public static class FestivalDayFixes
+    public static class Patches
     {
         public static void LoadFestPrefix(ref string festival)
         {

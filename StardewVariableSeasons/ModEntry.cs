@@ -25,7 +25,7 @@ namespace StardewVariableSeasons
                 {
                     harmony.Patch(
                         original: AccessTools.Method(type, "MoveNext"),
-                        transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.SeasonTranspiler))
+                        transpiler: new HarmonyMethod(typeof(Patches), nameof(Patches.SeasonTranspiler))
                     );
                 }
             }
@@ -37,54 +37,54 @@ namespace StardewVariableSeasons
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), "UpdateWeatherForNewDay"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(WorldDate), "Now"),
-                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.SeasonTranspiler))
+                transpiler: new HarmonyMethod(typeof(Patches), nameof(Patches.SeasonTranspiler))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "isFestivalDay"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Event), "tryToLoadFestival"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.LoadFestPrefix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.LoadFestPrefix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), "performTenMinuteClockUpdate"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), "warpFarmer",
                     new[] { typeof(LocationRequest), typeof(int), typeof(int), typeof(int) }),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), "AreStoresClosedForFestival"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), "getStartTimeOfFestival"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), "isBirthday"),
-                transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.SeasonTranspiler))
+                transpiler: new HarmonyMethod(typeof(Patches), nameof(Patches.SeasonTranspiler))
             );
             
             harmony.Patch(
@@ -95,14 +95,14 @@ namespace StardewVariableSeasons
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Billboard), "draw", new [] { typeof(SpriteBatch) }),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
             
             harmony.Patch(
                 original: AccessTools.Constructor(typeof(Billboard), new [] { typeof(bool) }),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPrefix)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.ResetSeasonPostfix))
             );
 
             helper.Events.GameLoop.GameLaunched +=
