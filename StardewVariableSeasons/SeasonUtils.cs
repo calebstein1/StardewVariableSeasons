@@ -55,19 +55,5 @@ namespace StardewVariableSeasons
                 _ => Season.Spring
             };
         }
-
-        internal static IEnumerable<CodeInstruction> SeasonForSaveTranspiler(IEnumerable<CodeInstruction> instructions)
-        {
-            var codes = instructions.ToList();
-            for (var i = 0; i < codes.Count; i++)
-            {
-                if (codes[i].opcode == OpCodes.Call && (codes[i].operand as MethodInfo)?.Name is "get_seasonIndex")
-                {
-                    codes[i] = CodeInstruction.Call(typeof(ModEntry), "get_SeasonIndex");
-                }
-            }
-
-            return codes.AsEnumerable();
-        }
     }
 }

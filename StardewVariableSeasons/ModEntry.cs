@@ -25,7 +25,7 @@ namespace StardewVariableSeasons
                 {
                     harmony.Patch(
                         original: AccessTools.Method(type, "MoveNext"),
-                        transpiler: new HarmonyMethod(typeof(SeasonUtils), nameof(SeasonUtils.SeasonForSaveTranspiler))
+                        transpiler: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.SeasonTranspiler))
                     );
                 }
             }
@@ -35,12 +35,6 @@ namespace StardewVariableSeasons
                 postfix: new HarmonyMethod(typeof(CustomWeatherChannelMessage), nameof(CustomWeatherChannelMessage.Postfix))
             );
 
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
-                prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
-                postfix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPostfix))
-            );
-            
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), "UpdateWeatherForNewDay"),
                 prefix: new HarmonyMethod(typeof(FestivalDayFixes), nameof(FestivalDayFixes.ResetSeasonPrefix)),
