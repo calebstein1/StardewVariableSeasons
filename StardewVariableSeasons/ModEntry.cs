@@ -94,6 +94,26 @@ namespace StardewVariableSeasons
                 original: AccessTools.Method(typeof(NPC), "isBirthday"),
                 transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "get_IsSpring"),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "get_IsSummer"),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "get_IsFall"),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), "get_IsWinter"),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Crop), "IsInSeason", new [] { typeof(GameLocation) }),
