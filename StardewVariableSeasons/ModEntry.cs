@@ -15,13 +15,19 @@ namespace StardewVariableSeasons
         public static Season SeasonByDay;
         public static string CurrentSeason => Utility.getSeasonKey(SeasonByDay);
         public static int SeasonIndex => (int)SeasonByDay;
-        
+
+        internal static MemberInfo NewDayAfterFadeMethod = null;
         internal static MethodInfo TenMinuteMethod = null;
         internal static MethodInfo GetBirthdaysMethod = null;
         
         public override void Entry(IModHelper helper)
         {
             var harmony = new Harmony(ModManifest.UniqueID);
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), helper.Reflection.GetMethod(typeof(Game1), "_newDayAfterFade").MethodInfo.Name),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.ExtractNewDayAfterFadeMethod))
+            );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), nameof(Game1.performTenMinuteClockUpdate)),
@@ -33,16 +39,10 @@ namespace StardewVariableSeasons
                 transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.ExtractGetBirthdaysMethod))
             );
 
-            foreach (var type in typeof(Game1).Assembly.GetTypes())
-            {
-                if (type.FullName.StartsWith("StardewValley.Game1+<_newDayAfterFade>"))
-                {
-                    harmony.Patch(
-                        original: AccessTools.Method(type, "MoveNext"),
-                        transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
-                    );
-                }
-            }
+            harmony.Patch(
+                original: AccessTools.Method(NewDayAfterFadeMethod.ReflectedType, "MoveNext"),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
             
             harmony.Patch(
                 original: AccessTools.Method(TenMinuteMethod.ReflectedType, TenMinuteMethod.Name),

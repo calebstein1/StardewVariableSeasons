@@ -39,6 +39,18 @@ namespace StardewVariableSeasons
             return codes.AsEnumerable();
         }
 
+        internal static IEnumerable<CodeInstruction> ExtractNewDayAfterFadeMethod(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = instructions.ToList();
+            
+            foreach (var code in codes.Where(code => code.opcode == OpCodes.Newobj))
+            {
+                ModEntry.NewDayAfterFadeMethod = code.operand as MemberInfo;
+            }
+            
+            return codes.AsEnumerable();
+        }
+        
         internal static IEnumerable<CodeInstruction> ExtractTenMinuteMethod(IEnumerable<CodeInstruction> instructions)
         {
             var codes = instructions.ToList();
