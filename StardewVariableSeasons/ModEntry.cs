@@ -15,6 +15,7 @@ namespace StardewVariableSeasons
         public static Season SeasonByDay;
         public static string CurrentSeason => Utility.getSeasonKey(SeasonByDay);
         public static int SeasonIndex => (int)SeasonByDay;
+        
         internal static MethodInfo TenMinuteMethod = null;
         internal static MethodInfo GetBirthdaysMethod = null;
         
@@ -41,14 +42,12 @@ namespace StardewVariableSeasons
                         transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
                     );
                 }
-                else if (type.FullName.Equals("StardewValley.Game1+<>c"))
-                {
-                    harmony.Patch(
-                        original: AccessTools.Method(type, TenMinuteMethod.Name),
-                        transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
-                    );
-                }
             }
+            
+            harmony.Patch(
+                original: AccessTools.Method(TenMinuteMethod.ReflectedType, TenMinuteMethod.Name),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(TV), "getWeatherForecast"),
@@ -112,16 +111,10 @@ namespace StardewVariableSeasons
                 transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
 
-            foreach (var type in typeof(Billboard).Assembly.GetTypes())
-            {
-                if (type.FullName.StartsWith("StardewValley.Menus.Billboard+<>c__DisplayClass"))
-                {
-                    harmony.Patch(
-                        original: AccessTools.Method(type, GetBirthdaysMethod.Name),
-                        transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
-                    );
-                }
-            }
+            harmony.Patch(
+                original: AccessTools.Method(GetBirthdaysMethod.ReflectedType, GetBirthdaysMethod.Name),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
             
             harmony.Patch(
                 original: AccessTools.Constructor(typeof(Billboard), new [] { typeof(bool) }),
