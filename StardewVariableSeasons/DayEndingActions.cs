@@ -18,6 +18,8 @@ namespace StardewVariableSeasons
         }
         public static void OnDayEnding(IMonitor monitor, IModHelper helper, object sender, DayEndingEventArgs e)
         {
+            if (!Game1.IsMasterGame) return;
+            
             ModEntry.ChangeDate = helper.Data.ReadSaveData<ModData>("next-season-change").NextSeasonChange;
             
             var changeDate = ModEntry.ChangeDate;
@@ -62,7 +64,7 @@ namespace StardewVariableSeasons
             }
 
             monitor.Log($"Current actual season is {Game1.season.ToString()}");
-            monitor.Log($"Current season by day is {ModEntry.SeasonByDay.ToString()}");
+            monitor.Log($"Current season by day is {ModEntry.CurrentSeason}");
             monitor.Log($"Next season change on {changeDate.ToString()}");
             monitor.Log($"Crop survival counter is {ModEntry.CropSurvivalCounter.ToString()}");
 
