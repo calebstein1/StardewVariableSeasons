@@ -135,6 +135,11 @@ namespace StardewVariableSeasons
                 original: AccessTools.Method(GetBirthdaysMethod.ReflectedType, GetBirthdaysMethod.Name),
                 transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.getDaysOfBooksellerThisSeason)),
+                transpiler: new HarmonyMethod(typeof(SvsPatches), nameof(SvsPatches.SeasonTranspiler))
+            );
             
             harmony.Patch(
                 original: AccessTools.Constructor(typeof(Billboard), new [] { typeof(bool) }),
